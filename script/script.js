@@ -4,12 +4,17 @@
 */
 //Global variables
 let animationRunning = false;
+const submitText = $('#submitText');
+const inputEmail = $('#inputEmail');
+const signInText =  $('#signInText');
+let userEmail;
+let userPassword;
+
 //This code runs after page load
 $(document).ready(function () {
-    const submitText = $('#submitText');
-    const inputEmail = $('#inputEmail');
     //hide the house animation
     $('#houseAnimation').hide();
+    /*
     //catch the hover event
     $(".form-control").hover(function () {
         //hide the text
@@ -17,7 +22,7 @@ $(document).ready(function () {
         //show the image
         $('#houseAnimation').show();
     });
-
+    */
     //catch the typing event
     inputEmail.on('input', function () {
         //hide the text
@@ -25,29 +30,32 @@ $(document).ready(function () {
         //show the image
         $('#houseAnimation').show();
         //start the animation
-        if(!animationRunning){
+        if (!animationRunning) {
             submitText.text('Typing')
-            startDotAnimation();
+            startDotAnimation(signInText);
         }
     });
 
     //on submitText button click
-    $( "#houseAnimation" ).onclick(function( event ) {
-        console.log('clicked');
-        /*
+    $("#houseAnimation").click(function (event) {
+        //hide the animation
+        $(this).hide();
+        //console.log('clicked');
         //Change the text
-        submitText.text('Thank you for submitting');
-        //stop the animation
-
+        submitText.text('Data successfully submitted');
+        //add dot animation
+        startDotAnimation(submitText);
+        //show the text
+        submitText.show();
         //Get user email and password
-        let email = inputEmail.value();
+        userEmail = inputEmail.val();
         //clean the input fields
-        inputEmail.text('');
-        let password = $('#inputPassword').value();
-        password.text('');
-        console.log(email,password);
+        userPassword = $('#inputPassword').val();
+        let userData = {'email':userEmail, 'password':userPassword};
+        console.log(userData);
+        //change the text
+        $('#totalText').hide("slow");
 
-         */
     });
 
 
@@ -56,10 +64,10 @@ $(document).ready(function () {
 /**
  * @internal will start the dot animation
  */
-function startDotAnimation(){
+function startDotAnimation(div) {
     animationRunning = true;
     //dot animation at the end
-    $('#singInText').dotAnimation({
+    div.dotAnimation({
         speed: 300,
         dotElement: '.',
         numDots: 3
